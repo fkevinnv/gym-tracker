@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/routine_model.dart';
 import '../../models/exercise_model.dart';
 import '../../services/routine_service.dart';
+import 'workout_screen.dart';
 
 class RoutineDetailScreen extends StatelessWidget {
   final Routine routine;
@@ -12,7 +13,26 @@ class RoutineDetailScreen extends StatelessWidget {
     final routineService = RoutineService();
 
     return Scaffold(
-      appBar: AppBar(title: Text(routine.name)),
+      appBar: AppBar(
+        title: Text(routine.name),
+        actions: [
+          ElevatedButton.icon(
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => WorkoutScreen(routine: routine),
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+            ),
+            icon: const Icon(Icons.play_arrow),
+            label: const Text('Iniciar'),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: routine.exercises.isEmpty
           ? const Center(
               child: Column(
@@ -183,7 +203,6 @@ class _ExerciseCard extends StatelessWidget {
               exercises: updatedExercises,
               createdAt: routine.createdAt,
             ));
-            if (context.mounted) Navigator.pop(context);
           },
         ),
       ),
